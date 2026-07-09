@@ -720,9 +720,10 @@ section { padding: 6rem 0; position: relative; }
 .stream-tier.featured {
   border-color: var(--green-bright);
   background: var(--green-dark);
+  clip-path: none;
 }
 .stream-pop-badge {
-  position: absolute; top:-12px; left:1.5rem;
+  position: absolute; top:-12px; left:50%; transform:translateX(-50%); white-space:nowrap;
   background: var(--green-bright);
   color: var(--black);
   font-family: 'Bebas Neue', sans-serif;
@@ -946,14 +947,14 @@ nav {
   .hero { grid-template-columns:1fr; }
   .hero-right { display:none; }
   .hero-left { padding:8rem 2rem 5rem; }
-  .hero-ctas-row { align-items:stretch; }
+  .hero-ctas-row { flex-direction:column; align-items:stretch; }
   .hero-ctas { flex-direction:column; flex:0 0 auto; }
   .goblin-mobile-slot {
     display:block;
     position:relative;
     flex:1 1 auto;
-    min-width:140px;
-    height:300px;
+    width:100%;
+    height:345px;
     overflow:visible;
   }
   .goblin-mobile-slot .goblin-wrapper::before {
@@ -967,8 +968,8 @@ nav {
     height:auto;
     max-width:none;
     max-height:none;
-    right:-18%;
-    bottom:-10px;
+    right:-25%;
+    bottom:-2px;
   }
   .quiz-wrap { grid-template-columns:1fr; gap:2rem; }
   .pkg-grid { grid-template-columns:1fr; gap:2rem; }
