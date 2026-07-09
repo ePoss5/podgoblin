@@ -259,6 +259,7 @@ body::before {
   height: 95%;
   max-height: 820px;
   width: auto;
+  max-width: 100%;
   object-fit: contain;
   object-position: bottom right;
   transform: translateX(-35%);
@@ -707,6 +708,66 @@ section { padding: 6rem 0; position: relative; }
   margin-bottom:-1px;
 }
 
+/* ── STREAMING MODAL TIERS ── */
+.stream-tiers { display:flex; flex-direction:column; gap:1rem; margin:1.5rem 0; }
+.stream-tier {
+  background: var(--mud);
+  border: 1px solid var(--green-dark);
+  padding: 1.25rem 1.5rem;
+  position: relative;
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+}
+.stream-tier.featured {
+  border-color: var(--green-bright);
+  background: var(--green-dark);
+}
+.stream-pop-badge {
+  position: absolute; top:-12px; left:1.5rem;
+  background: var(--green-bright);
+  color: var(--black);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  padding: 0.15rem 0.75rem;
+}
+.stream-tier-head {
+  display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:0.4rem 1rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.stream-tier-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.4rem;
+  color: var(--white);
+  letter-spacing: 0.03em;
+}
+.featured .stream-tier-name { color: var(--green-acid); }
+.stream-tier-price {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1rem;
+  color: var(--parchment);
+  letter-spacing: 0.02em;
+}
+.stream-tier-price small {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0.4rem 0 0.15rem;
+}
+.stream-tier-list { list-style:none; }
+.stream-tier-list li {
+  font-size: 0.85rem;
+  color: var(--parchment);
+  padding: 0.25rem 0;
+  display:flex; align-items:center; gap:0.5rem;
+}
+.stream-tier-list li::before { content:'—'; color:var(--green-mid); font-size:0.7rem; flex-shrink:0; }
+.featured .stream-tier-list li { color: var(--cream); }
+.featured .stream-tier-list li::before { color: var(--green-bright); }
+
 /* ── BOOKING MODAL ── */
 .modal-overlay {
   display:none;
@@ -886,11 +947,12 @@ nav {
   .hero-right { display:none; }
   .hero-left { padding:8rem 2rem 5rem; }
   .hero-ctas-row { align-items:stretch; }
-  .hero-ctas { flex-direction:column; flex:1 1 auto; }
+  .hero-ctas { flex-direction:column; flex:0 0 auto; }
   .goblin-mobile-slot {
     display:block;
     position:relative;
-    flex:0 0 48%;
+    flex:1 1 auto;
+    min-width:70px;
     height:340px;
     overflow:hidden;
   }
@@ -898,7 +960,7 @@ nav {
     display:none;
   }
   .goblin-mobile-slot .goblin-stage {
-    transform: translate(14%, 8%);
+    transform: translate(6%, 8%);
   }
   .quiz-wrap { grid-template-columns:1fr; gap:2rem; }
   .pkg-grid { grid-template-columns:1fr; gap:2rem; }
@@ -1262,13 +1324,68 @@ nav {
 
 <!-- STREAMING INFO MODAL -->
 <div class="modal-overlay" id="streamOverlay" onclick="closeStream(event)">
-  <div class="modal-box" id="streamBox" style="max-width:560px;">
+  <div class="modal-box" id="streamBox" style="max-width:640px;">
     <button class="modal-close" onclick="closeStream()">✕</button>
     <div class="modal-eyebrow">Also Available</div>
     <div class="modal-title">Live Streaming</div>
     <p style="color:var(--parchment); font-family:'Barlow Condensed',sans-serif; font-size:1.1rem; line-height:1.6; margin:1.2rem 0;">Broadcast-quality, multi-cam live production that looks switched and professional, not basement. We can multi-cast your event to up to 4 platforms at once: LinkedIn, YouTube, X, Instagram, Amazon and more.</p>
-    <p style="color:var(--parchment); font-family:'Barlow Condensed',sans-serif; font-size:1.1rem; line-height:1.6; margin:1.2rem 0;">Live streaming runs under the Flaskamp Creative side of the studio, where the full packages and pricing live.</p>
-    <a href="https://flaskampcreative.com" target="_blank" rel="noopener" class="form-submit" style="display:block; text-align:center; text-decoration:none;">See Streaming Packages &#8594;</a>
+
+    <div class="stream-tiers">
+      <div class="stream-tier">
+        <div class="stream-tier-head">
+          <span class="stream-tier-name">Essential</span>
+          <span class="stream-tier-price">$1,800<small>half day</small> · $2,500<small>full day</small></span>
+        </div>
+        <ul class="stream-tier-list">
+          <li>1 crew · 1 camera</li>
+          <li>Cam-link · laptop</li>
+          <li>Direct audio feed</li>
+          <li>2 wireless mics</li>
+          <li>HD master file</li>
+        </ul>
+      </div>
+      <div class="stream-tier featured">
+        <div class="stream-pop-badge">Most Popular</div>
+        <div class="stream-tier-head">
+          <span class="stream-tier-name">Professional</span>
+          <span class="stream-tier-price">$3,800<small>half day</small> · $4,800<small>full day</small></span>
+        </div>
+        <ul class="stream-tier-list">
+          <li>2 crew · 2 cameras</li>
+          <li>Video switcher · laptop</li>
+          <li>Direct audio feed</li>
+          <li>2 wireless mics</li>
+          <li>HD master file</li>
+        </ul>
+      </div>
+      <div class="stream-tier">
+        <div class="stream-tier-head">
+          <span class="stream-tier-name">Premium</span>
+          <span class="stream-tier-price">$5,500<small>half day</small> · $7,000<small>full day</small></span>
+        </div>
+        <ul class="stream-tier-list">
+          <li>3 crew · 3 cameras</li>
+          <li>Video switcher · laptop</li>
+          <li>Direct audio feed</li>
+          <li>4 wireless mics</li>
+          <li>HD master file</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="addons-wrap" style="margin-top:0.5rem;">
+      <div class="addons-label">Add-ons</div>
+      <div class="addons-chips">
+        <span class="addon-chip">2nd computer &amp; speakers</span>
+        <span class="addon-chip">TV monitor</span>
+        <span class="addon-chip">Additional mics</span>
+        <span class="addon-chip">Video roll-ins</span>
+        <span class="addon-chip">Teleprompter</span>
+        <span class="addon-chip">Custom inquiry</span>
+      </div>
+    </div>
+
+    <a href="mailto:FlaskampCreative@pm.me?subject=Live%20Streaming%20Inquiry" class="form-submit" style="display:block; text-align:center; text-decoration:none; margin-top:1.5rem;">Get a Quote &#8594;</a>
   </div>
 </div>
 
