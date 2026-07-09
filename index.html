@@ -164,9 +164,15 @@ body::before {
   font-weight: 600;
 }
 
+.hero-ctas-row {
+  display:flex; align-items:center; gap:1rem;
+}
+
 .hero-ctas {
   display:flex; gap:1rem; flex-wrap:wrap;
 }
+
+.goblin-mobile-slot { display:none; }
 
 .btn-primary {
   font-family: 'Bebas Neue', sans-serif;
@@ -879,6 +885,21 @@ nav {
   .hero { grid-template-columns:1fr; }
   .hero-right { display:none; }
   .hero-left { padding:8rem 2rem 5rem; }
+  .hero-ctas-row { align-items:stretch; }
+  .hero-ctas { flex-direction:column; flex:1 1 auto; }
+  .goblin-mobile-slot {
+    display:block;
+    position:relative;
+    flex:0 0 48%;
+    height:340px;
+    overflow:hidden;
+  }
+  .goblin-mobile-slot .goblin-wrapper::before {
+    display:none;
+  }
+  .goblin-mobile-slot .goblin-stage {
+    transform: translate(14%, 8%);
+  }
   .quiz-wrap { grid-template-columns:1fr; gap:2rem; }
   .pkg-grid { grid-template-columns:1fr; gap:2rem; }
   nav { padding:1rem 1.5rem; }
@@ -979,9 +1000,12 @@ nav {
       Professional podcast production<br>
       without the studio price tag.
     </p>
-    <div class="hero-ctas">
-      <a href="#quiz" class="btn-primary">Find My Package</a>
-      <a href="#packages" class="btn-secondary">See Packages</a>
+    <div class="hero-ctas-row">
+      <div class="hero-ctas">
+        <a href="#quiz" class="btn-primary">Find My Package</a>
+        <a href="#packages" class="btn-secondary">See Packages</a>
+      </div>
+      <div class="goblin-mobile-slot" id="goblinMobileSlot"></div>
     </div>
   </div>
 
@@ -1327,6 +1351,20 @@ nav {
 </div>
 
 <script>
+// ── GOBLIN MOBILE/DESKTOP SLOT ──
+(function(){
+  var slot = document.getElementById('goblinMobileSlot');
+  var wrapper = document.querySelector('.goblin-wrapper');
+  var desktopParent = wrapper.parentElement;
+  function placeGoblin(mq){
+    if (mq.matches) { slot.appendChild(wrapper); }
+    else { desktopParent.appendChild(wrapper); }
+  }
+  var mq = window.matchMedia('(max-width:900px)');
+  placeGoblin(mq);
+  mq.addEventListener('change', placeGoblin);
+})();
+
 // ── CURSOR ──
 var cur=document.getElementById('cursor');
 var ring=document.getElementById('cursorRing');
