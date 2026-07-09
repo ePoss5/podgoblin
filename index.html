@@ -952,15 +952,20 @@ nav {
     display:block;
     position:relative;
     flex:1 1 auto;
-    min-width:70px;
+    min-width:120px;
     height:340px;
-    overflow:hidden;
+    overflow:visible;
   }
   .goblin-mobile-slot .goblin-wrapper::before {
     display:none;
   }
   .goblin-mobile-slot .goblin-stage {
-    transform: translate(6%, 8%);
+    transform: none;
+  }
+  .goblin-mobile-slot .goblin-img {
+    height:125%;
+    max-height:none;
+    transform: translate(-6%, 16%);
   }
   .quiz-wrap { grid-template-columns:1fr; gap:2rem; }
   .pkg-grid { grid-template-columns:1fr; gap:2rem; }
