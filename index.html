@@ -1394,7 +1394,7 @@ nav {
       </div>
     </div>
 
-    <a href="mailto:FlaskampCreative@pm.me?subject=Live%20Streaming%20Inquiry" class="form-submit" style="display:block; text-align:center; text-decoration:none; margin-top:1.5rem;">Get a Quote &#8594;</a>
+    <button type="button" class="form-submit" style="display:block; width:100%; text-align:center; margin-top:1.5rem;" onclick="closeStream();openBooking('Live Streaming — Quote Request');">Get a Quote &#8594;</button>
   </div>
 </div>
 
@@ -1446,6 +1446,12 @@ nav {
           <option>Mobile Podcasting — Essential</option>
           <option>Mobile Podcasting — Professional</option>
           <option>Mobile Podcasting — Premium</option>
+        </optgroup>
+       <optgroup label="Live Streaming">
+          <option>Live Streaming — Essential</option>
+          <option>Live Streaming — Professional</option>
+          <option>Live Streaming — Premium</option>
+          <option>Live Streaming — Quote Request</option>
         </optgroup>
         <option>Custom Inquiry</option>
       </select>
@@ -1588,6 +1594,7 @@ function openBooking(pkg){
     'Mobile Podcasting — Essential':'Book: Mobile Podcasting Essential',
     'Mobile Podcasting — Professional':'Book: Mobile Podcasting Professional',
     'Mobile Podcasting — Premium':'Book: Mobile Podcasting Premium',
+    'Live Streaming — Quote Request':'Live Streaming Quote Request',
     'Custom Inquiry':'Custom Package Inquiry'
   };
   document.getElementById('modalTitle').textContent=titles[pkg]||'Book a Package';
