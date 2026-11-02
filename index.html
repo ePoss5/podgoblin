@@ -324,6 +324,42 @@ body::before {
   50%      { margin-bottom: 18px; }
 }
 
+/* ── STUDIO PHOTO STRIP ── */
+.studio-strip { padding:0; position:relative; background:var(--black); line-height:0; }
+.studio-track {
+  position:relative;
+  display:flex;
+  overflow-x:auto;
+  scroll-snap-type:x proximity;
+  scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+}
+.studio-track::-webkit-scrollbar { display:none; }
+.studio-track:focus-visible { outline:3px solid var(--green-acid); outline-offset:-3px; }
+.studio-track img {
+  display:block;
+  flex:0 0 auto;
+  height:clamp(240px, 32vw, 440px);
+  width:auto;
+  scroll-snap-align:start;
+}
+.studio-arrow {
+  position:absolute; top:50%; transform:translateY(-50%);
+  width:48px; height:48px;
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(13,13,11,0.75);
+  border:1px solid var(--green-mid);
+  color:var(--green-acid);
+  font-size:1.3rem; line-height:1;
+  cursor:pointer;
+  transition:background 0.15s, opacity 0.15s;
+}
+.studio-arrow:hover { background:var(--black); }
+.studio-arrow:focus-visible { outline:3px solid var(--green-acid); outline-offset:2px; }
+.studio-arrow.prev { left:1rem; }
+.studio-arrow.next { right:1rem; }
+.studio-arrow[disabled] { opacity:0.3; cursor:default; }
+
 /* ── SECTION SHARED ── */
 section { padding: 6rem 0; position: relative; }
 
@@ -335,8 +371,8 @@ section { padding: 6rem 0; position: relative; }
 
 .section-eyebrow {
   font-family: 'Special Elite', cursive;
-  font-size: 0.75rem;
-  letter-spacing: 0.3em;
+  font-size: 1rem;
+  letter-spacing: 0.25em;
   text-transform: uppercase;
   color: var(--green-bright);
   margin-bottom: 1rem;
@@ -779,6 +815,20 @@ section { padding: 6rem 0; position: relative; }
   padding: 0.25rem 0;
   display:flex; align-items:center; gap:0.5rem;
 }
+.stream-video-wrap { position:relative; margin:1.25rem 0 1.5rem; }
+.stream-video { display:block; width:100%; height:auto; background:var(--black); border:1px solid var(--green-dark); }
+.stream-video-label {
+  position:absolute; right:0.75rem; bottom:3.75rem;
+  max-width:calc(100% - 1.5rem);
+  padding:0.3rem 0.7rem;
+  background:rgba(13,13,11,0.8);
+  border-left:3px solid var(--green-acid);
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1rem; line-height:1.2; letter-spacing:0.08em;
+  color:var(--white);
+  pointer-events:none;
+}
+@media(max-width:600px){ .stream-video-label { right:0.4rem; bottom:3.9rem; max-width:calc(100% - 0.8rem); padding:0.2rem 0.45rem; font-size:0.72rem; letter-spacing:0.05em; white-space:nowrap; } }
 .stream-tier-list li::before { content:'•'; color:var(--green-mid); font-size:0.7rem; flex-shrink:0; }
 .featured .stream-tier-list li { color: var(--cream); }
 .featured .stream-tier-list li::before { color: var(--green-bright); }
@@ -1112,6 +1162,21 @@ nav {
   </div>
 </section>
 
+<!-- STUDIO PHOTOS -->
+<section class="studio-strip" aria-label="Photos of the podcast studio">
+  <div class="studio-track" id="studioTrack" tabindex="0" role="group" aria-label="Studio photos, scroll to see more">
+    <img src="images/studio/podcast-table.jpg" alt="Podcast table with four boom mics in front of a wood slat wall" width="773" height="435" loading="lazy">
+    <img src="images/studio/interview-set.jpg" alt="Interview set with three mustard yellow chairs and boom mics" width="778" height="417" loading="lazy">
+    <img src="images/studio/recording-session.jpg" alt="Crew recording a podcast guest at the round table with a camera and monitor" width="776" height="436" loading="lazy">
+    <img src="images/studio/control-room.jpg" alt="Control room with a video switcher, audio gear and wall monitors" width="679" height="508" loading="lazy">
+    <img src="images/studio/live-switching.jpg" alt="Technical director switching a live show on a lit control panel" width="670" height="504" loading="lazy">
+    <img src="images/studio/multiview-monitor.jpg" alt="Control room monitor showing several camera angles of an interview" width="774" height="434" loading="lazy">
+    <img src="images/studio/open-studio.jpg" alt="Large open studio floor with a lighting grid and black drapes" width="674" height="509" loading="lazy">
+  </div>
+  <button type="button" class="studio-arrow prev" id="studioPrev" aria-label="Previous photo">&#8592;</button>
+  <button type="button" class="studio-arrow next" id="studioNext" aria-label="Next photo">&#8594;</button>
+</section>
+
 <!-- QUIZ SECTION -->
 <section class="quiz-section" id="quiz">
   <div class="container">
@@ -1349,6 +1414,13 @@ nav {
     <div class="modal-title">Live Streaming</div>
     <p style="color:var(--parchment); font-family:'Barlow Condensed',sans-serif; font-size:1.1rem; line-height:1.6; margin:1.2rem 0;">Broadcast-quality, multi-cam live production that looks switched and professional, not basement. We can multi-cast your event to up to 4 platforms at once: LinkedIn, YouTube, X, Instagram, Amazon and more.</p>
 
+    <div class="stream-video-wrap">
+      <video class="stream-video" id="streamVideo" controls playsinline preload="none" poster="images/streaming-poster.jpg" aria-label="Short clip of a three camera live stream setup at a graduation ceremony">
+        <source src="video/streaming-example.mp4" type="video/mp4">
+      </video>
+      <div class="stream-video-label">Live Stream Graduation Ceremony 2026</div>
+    </div>
+
     <div class="stream-tiers">
       <div class="stream-tier">
         <div class="stream-tier-head">
@@ -1504,6 +1576,29 @@ nav {
   var mq = window.matchMedia('(max-width:900px)');
   placeGoblin(mq);
   mq.addEventListener('change', placeGoblin);
+})();
+
+// ── STUDIO PHOTOS ──
+(function(){
+  var track=document.getElementById('studioTrack'), prev=document.getElementById('studioPrev'), next=document.getElementById('studioNext');
+  if(!track) return;
+  var calm=window.matchMedia('(prefers-reduced-motion: reduce)');
+  function update(){
+    prev.disabled = track.scrollLeft < 4;
+    next.disabled = track.scrollLeft + track.clientWidth > track.scrollWidth - 4;
+  }
+  function step(dir){
+    var imgs=[].slice.call(track.children), x=track.scrollLeft, target;
+    if(dir>0){ target=imgs.filter(function(i){ return i.offsetLeft > x+4; })[0]; }
+    else { target=imgs.filter(function(i){ return i.offsetLeft < x-4; }).pop(); }
+    track.scrollTo({ left: target ? target.offsetLeft : (dir>0 ? track.scrollWidth : 0), behavior: calm.matches ? 'auto' : 'smooth' });
+  }
+  prev.addEventListener('click',function(){ step(-1); });
+  next.addEventListener('click',function(){ step(1); });
+  track.addEventListener('scroll',update,{passive:true});
+  window.addEventListener('resize',update);
+  window.addEventListener('load',update);
+  update();
 })();
 
 // ── CURSOR ──
@@ -1665,7 +1760,7 @@ function submitContact(e){
 
 // ── STREAMING INFO MODAL ──
 function openStream(){ document.getElementById('streamOverlay').classList.add('open'); document.body.style.overflow='hidden'; }
-function closeStream(e){ if(e&&e.target!==document.getElementById('streamOverlay'))return; document.getElementById('streamOverlay').classList.remove('open'); document.body.style.overflow=''; }
+function closeStream(e){ if(e&&e.target!==document.getElementById('streamOverlay'))return; document.getElementById('streamVideo').pause(); document.getElementById('streamOverlay').classList.remove('open'); document.body.style.overflow=''; }
 (function(){ var sb=document.getElementById('streamBox'); if(sb){ sb.addEventListener('click',function(e){e.stopPropagation();}); } })();
 document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeStream(); });
 </script>
