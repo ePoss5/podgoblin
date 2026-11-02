@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PodGoblin — Mobile Podcast Production</title>
+<title>PodGoblin | Podcast &amp; Live Stream Production</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon.ico" sizes="32x32">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -92,6 +92,14 @@ body::before {
     var(--black);
 }
 
+/* Podcast room photo, very low opacity, behind everything */
+.hero-bg::before {
+  content:'';
+  position:absolute; inset:0;
+  background: url(images/podcast-room.jpg) center 45% / cover no-repeat;
+  opacity: 0.16;
+}
+
 /* Torn edge effect at bottom */
 .hero::after {
   content:'';
@@ -161,6 +169,7 @@ body::before {
   margin: 1.5rem 0 2.5rem;
   line-height: 1.6;
 }
+.hero-sub { max-width: 31rem; }
 .hero-sub em {
   font-style: normal;
   color: var(--green-bright);
@@ -222,7 +231,7 @@ body::before {
 .hero-right {
   position:relative; z-index:5;
   display:flex; align-items:flex-end; justify-content:flex-end;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .goblin-wrapper {
@@ -290,6 +299,12 @@ body::before {
   100% { opacity:1; transform: translateX(-35%) scale(1); }
 }
 
+/* Phones: starts past the right edge, slides to center */
+@keyframes goblinSlideInMobile {
+  0%   { transform: translateX(65vw); }
+  100% { transform: translateX(-35%); }
+}
+
 /* Initial slide in from off-screen right */
 @keyframes goblinSlideIn {
   0%   { transform: translateX(110%); }
@@ -307,34 +322,6 @@ body::before {
 @keyframes goblinFloat {
   0%,100% { margin-bottom: 0px; }
   50%      { margin-bottom: 18px; }
-}
-
-/* ── MARQUEE TICKER ── */
-.ticker {
-  background: var(--green-dark);
-  border-top: 2px solid var(--green-mid);
-  border-bottom: 2px solid var(--green-mid);
-  padding: 0.75rem 0;
-  overflow: hidden;
-  white-space: nowrap;
-  position: relative; z-index:5;
-}
-.ticker-inner {
-  display: inline-flex;
-  animation: ticker 22s linear infinite;
-}
-.ticker-item {
-  font-family: 'Special Elite', cursive;
-  font-size: 0.85rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--green-acid);
-  padding: 0 3rem;
-}
-.ticker-item::before { content:'🎙️ '; }
-@keyframes ticker {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
 }
 
 /* ── SECTION SHARED ── */
@@ -563,6 +550,7 @@ section { padding: 6rem 0; position: relative; }
 .pkg-card.featured {
   border-color: var(--green-bright);
   background: var(--green-dark);
+  clip-path: none;
 }
 .pkg-card.featured::before {
   content:'MOST POPULAR';
@@ -638,7 +626,7 @@ section { padding: 6rem 0; position: relative; }
   display:flex; align-items:center; gap:0.5rem;
 }
 .pkg-includes li::before {
-  content:'—';
+  content:'•';
   color:var(--green-mid);
   font-size:0.7rem;
   flex-shrink:0;
@@ -677,6 +665,29 @@ section { padding: 6rem 0; position: relative; }
 }
 
 /* ── ADD-ONS ── */
+.setup-strip {
+  display:flex; align-items:center; flex-wrap:wrap; gap:0.5rem 1rem;
+  margin-top:2rem;
+  padding:1rem 1.25rem;
+  border:1px dashed var(--green-mid);
+}
+.setup-name {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.25rem;
+  letter-spacing:0.08em;
+  color:var(--white);
+}
+.setup-text { color:var(--parchment); font-size:0.95rem; }
+.setup-soon {
+  margin-left:auto;
+  font-family:'Special Elite',cursive;
+  font-size:0.72rem;
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  color:var(--green-acid);
+}
+@media(max-width:600px){ .setup-soon{ margin-left:0; width:100%; } }
+
 .addons-wrap {
   margin-top:2rem;
   padding-top:2rem;
@@ -768,7 +779,7 @@ section { padding: 6rem 0; position: relative; }
   padding: 0.25rem 0;
   display:flex; align-items:center; gap:0.5rem;
 }
-.stream-tier-list li::before { content:'—'; color:var(--green-mid); font-size:0.7rem; flex-shrink:0; }
+.stream-tier-list li::before { content:'•'; color:var(--green-mid); font-size:0.7rem; flex-shrink:0; }
 .featured .stream-tier-list li { color: var(--cream); }
 .featured .stream-tier-list li::before { color: var(--green-bright); }
 
@@ -949,15 +960,15 @@ nav {
 @media(max-width:900px) {
   .hero { grid-template-columns:1fr; }
   .hero-right { display:none; }
-  .hero-left { padding:8rem 2rem 5rem; }
+  .hero-left { padding:9rem 2rem 1rem; justify-content:flex-start; }
   .hero-ctas-row { flex-direction:column; align-items:stretch; }
   .hero-ctas { flex-direction:column; flex:0 0 auto; }
   .goblin-mobile-slot {
     display:block;
-    position:relative;
-    flex:1 1 auto;
+    position:absolute;
+    top:-16px; left:0; right:0;
     width:100%;
-    height:345px;
+    height:150px;
     overflow:visible;
   }
   .goblin-mobile-slot .goblin-wrapper::before {
@@ -967,12 +978,20 @@ nav {
     transform: none;
   }
   .goblin-mobile-slot .goblin-img {
-    width:72vw;
-    height:auto;
+    width:150px;
+    height:150px;
     max-width:none;
     max-height:none;
-    right:-25%;
-    bottom:-2px;
+    right:auto;
+    left:calc(50% - 22px);
+    bottom:0;
+  }
+  .goblin-mobile-slot .smoke-puff { right:auto; left:50%; bottom:50%; }
+  .goblin-mobile-slot .smoke-puff span { width:60px; height:60px; }
+  .goblin-mobile-slot .goblin-point {
+    animation:
+      goblinSlideInMobile 1.6s cubic-bezier(0.22,1,0.36,1) 0.3s both,
+      goblinPoof 0.7s ease-in 3.3s forwards;
   }
   .quiz-wrap { grid-template-columns:1fr; gap:2rem; }
   .pkg-grid { grid-template-columns:1fr; gap:2rem; }
@@ -1065,21 +1084,20 @@ nav {
   <div class="hero-bg"></div>
 
   <div class="hero-left">
-    <div class="hero-badge">Mobile Podcast Production · Tampa, FL</div>
+    <div class="goblin-mobile-slot" id="goblinMobileSlot"></div>
+    <div class="hero-badge">Podcast &amp; Live Stream Production · Tampa, FL</div>
     <h1 class="hero-title">
       <span class="pod">Pod</span><span class="goblin">Goblin</span>
     </h1>
     <p class="hero-sub">
-      We come to <em>you</em>.<br>
-      Professional podcast production<br>
-      without the studio price tag.
+      Your show, <em>anywhere</em>.<br>
+      In studio or on location, we handle the podcast and the stream, with a full team behind you when you need more.
     </p>
     <div class="hero-ctas-row">
       <div class="hero-ctas">
         <a href="#quiz" class="btn-primary">Find My Package</a>
         <a href="#packages" class="btn-secondary">See Packages</a>
       </div>
-      <div class="goblin-mobile-slot" id="goblinMobileSlot"></div>
     </div>
   </div>
 
@@ -1093,24 +1111,6 @@ nav {
     </div>
   </div>
 </section>
-
-<!-- TICKER -->
-<div class="ticker">
-  <div class="ticker-inner">
-    <span class="ticker-item">Live Streaming</span>
-    <span class="ticker-item">Mobile Podcast Production</span>
-    <span class="ticker-item">Multi-Cast to 4 Platforms</span>
-    <span class="ticker-item">Tampa Bay & Beyond</span>
-    <span class="ticker-item">We Come To You</span>
-    <span class="ticker-item">HD Master Files Included</span>
-    <span class="ticker-item">Live Streaming</span>
-    <span class="ticker-item">Mobile Podcast Production</span>
-    <span class="ticker-item">Multi-Cast to 4 Platforms</span>
-    <span class="ticker-item">Tampa Bay & Beyond</span>
-    <span class="ticker-item">We Come To You</span>
-    <span class="ticker-item">HD Master Files Included</span>
-  </div>
-</div>
 
 <!-- QUIZ SECTION -->
 <section class="quiz-section" id="quiz">
@@ -1135,7 +1135,7 @@ nav {
           <div class="quiz-options" style="grid-template-columns:1fr 1fr;">
             <button class="quiz-opt" onclick="quizAnswer(1,'podcast')">🎙️ Podcast / Interview Recording</button>
             <button class="quiz-opt" onclick="quizAnswer(1,'livestream')">📡 Live Streaming Event</button>
-            <button class="quiz-opt" onclick="quizAnswer(1,'both')">🎬 Both — Podcast + Stream</button>
+            <button class="quiz-opt" onclick="quizAnswer(1,'both')">🎬 Both: Podcast + Stream</button>
             <button class="quiz-opt" onclick="quizAnswer(1,'notsure')">🤔 Not Sure Yet</button>
           </div>
         </div>
@@ -1157,9 +1157,9 @@ nav {
           <div class="quiz-q">Do you need multi-platform streaming?</div>
           <div class="quiz-hint">Simultaneously broadcast to LinkedIn, YouTube, Instagram & more.</div>
           <div class="quiz-options">
-            <button class="quiz-opt" onclick="quizAnswer(3,'yes')">Yes — stream to multiple platforms</button>
+            <button class="quiz-opt" onclick="quizAnswer(3,'yes')">Yes, stream to multiple platforms</button>
             <button class="quiz-opt" onclick="quizAnswer(3,'one')">Just one platform is fine</button>
-            <button class="quiz-opt" onclick="quizAnswer(3,'record')">No streaming — just record</button>
+            <button class="quiz-opt" onclick="quizAnswer(3,'record')">No streaming, just record</button>
             <button class="quiz-opt" onclick="quizAnswer(3,'notsure')">I'm not sure yet</button>
           </div>
         </div>
@@ -1205,7 +1205,7 @@ nav {
         <h3 class="service-name">Mobile Podcasting</h3>
       </div>
       <div class="service-meta">Hourly & daily rates available · Hourly rates on request</div>
-      <div class="service-broadcast">Multi-casting — broadcast simultaneously to up to 4 platforms: LinkedIn, YouTube, X, Instagram, Amazon & more</div>
+      <div class="service-broadcast">Multi-casting lets you broadcast simultaneously to up to 4 platforms: LinkedIn, YouTube, X, Instagram, Amazon & more</div>
 
       <div class="pkg-grid">
         <div class="pkg-card reveal">
@@ -1231,7 +1231,7 @@ nav {
             <li>Portable lights</li>
             <li>HD master file</li>
           </ul>
-          <a href="#" class="pkg-btn" onclick="openBooking('Mobile Podcasting — Essential');return false;">Book Essential</a>
+          <a href="#" class="pkg-btn" onclick="openBooking('Mobile Podcasting: Essential');return false;">Book Essential</a>
         </div>
 
         <div class="pkg-card featured reveal">
@@ -1257,7 +1257,7 @@ nav {
             <li>Portable lights</li>
             <li>HD master file</li>
           </ul>
-          <a href="#" class="pkg-btn" onclick="openBooking('Mobile Podcasting — Professional');return false;">Book Professional</a>
+          <a href="#" class="pkg-btn" onclick="openBooking('Mobile Podcasting: Professional');return false;">Book Professional</a>
         </div>
 
         <div class="pkg-card reveal">
@@ -1283,8 +1283,15 @@ nav {
             <li>Portable lights</li>
             <li>HD master file</li>
           </ul>
-          <a href="#" class="pkg-btn" onclick="openBooking('Mobile Podcasting — Premium');return false;">Book Premium</a>
+          <a href="#" class="pkg-btn" onclick="openBooking('Mobile Podcasting: Premium');return false;">Book Premium</a>
         </div>
+      </div>
+
+      <!-- Coming soon -->
+      <div class="setup-strip reveal">
+        <span class="setup-name">Podcast Room Setup</span>
+        <span class="setup-text">We'll help you build your own.</span>
+        <span class="setup-soon">Coming soon</span>
       </div>
 
       <!-- Add-ons -->
@@ -1397,20 +1404,20 @@ nav {
       </div>
     </div>
 
-    <button type="button" class="form-submit" style="display:block; width:100%; text-align:center; margin-top:1.5rem;" onclick="closeStream();openBooking('Live Streaming — Quote Request');">Get a Quote &#8594;</button>
+    <button type="button" class="form-submit" style="display:block; width:100%; text-align:center; margin-top:1.5rem;" onclick="closeStream();openBooking('Live Streaming: Quote Request');">Get a Quote &#8594;</button>
   </div>
 </div>
 
 <!-- FOOTER -->
 <footer>
   <div class="footer-logo">PodGoblin</div>
-  <div class="footer-sub">Mobile Podcast Production · Tampa, FL</div>
+  <div class="footer-sub">Podcast &amp; Live Stream Production · Tampa, FL</div>
   <div class="footer-worlds">
     <span>Part of the Flaskamp universe:</span>
     <a href="https://flaskampcreative.com" target="_blank" rel="noopener">Flaskamp Creative</a>
   </div>
   <div class="footer-contact">
-    Questions? <a href="mailto:bookpodgoblin@pm.me">bookpodgoblin@pm.me</a> · A <a href="https://flaskampcreative.com" target="_blank" rel="noopener">Flaskamp Creative</a> production
+    Questions? <a href="mailto:hello@podgoblin.com">hello@podgoblin.com</a> · A <a href="https://flaskampcreative.com" target="_blank" rel="noopener">Flaskamp Creative</a> production
   </div>
   <div class="footer-copy">© 2026 Flaskamp Creative LLC · All rights reserved</div>
 </footer>
@@ -1443,17 +1450,17 @@ nav {
     <div class="form-group">
       <label class="form-label">Package Selected</label>
       <select class="form-select" id="fieldPackage" name="package">
-        <option value="">— Select a package —</option>
+        <option value="">Select a package</option>
         <optgroup label="Mobile Podcasting">
-          <option>Mobile Podcasting — Essential</option>
-          <option>Mobile Podcasting — Professional</option>
-          <option>Mobile Podcasting — Premium</option>
+          <option>Mobile Podcasting: Essential</option>
+          <option>Mobile Podcasting: Professional</option>
+          <option>Mobile Podcasting: Premium</option>
         </optgroup>
        <optgroup label="Live Streaming">
-          <option>Live Streaming — Essential</option>
-          <option>Live Streaming — Professional</option>
-          <option>Live Streaming — Premium</option>
-          <option>Live Streaming — Quote Request</option>
+          <option>Live Streaming: Essential</option>
+          <option>Live Streaming: Professional</option>
+          <option>Live Streaming: Premium</option>
+          <option>Live Streaming: Quote Request</option>
         </optgroup>
         <option>Custom Inquiry</option>
       </select>
@@ -1466,7 +1473,7 @@ nav {
       <div class="form-group">
         <label class="form-label">Half Day or Full Day?</label>
         <select class="form-select" id="fieldDuration" name="duration">
-          <option value="">— Select —</option>
+          <option value="">Select</option>
           <option>Half Day</option>
           <option>Full Day</option>
           <option>Hourly (request quote)</option>
@@ -1568,7 +1575,7 @@ function showQuizResult(){
 
   // Set the service type for booking
   var svc='Mobile Podcasting';
-  window._quizBookingPkg=svc+' — '+pkg;
+  window._quizBookingPkg=svc+': '+pkg;
 
   document.getElementById('quizResult').classList.add('show');
 }
@@ -1590,13 +1597,13 @@ function restartQuiz(){
 // ── BOOKING MODAL ──
 function openBooking(pkg){
   var titles={
-    'Live Streaming — Essential':'Book: Live Streaming Essential',
-    'Live Streaming — Professional':'Book: Live Streaming Professional',
-    'Live Streaming — Premium':'Book: Live Streaming Premium',
-    'Mobile Podcasting — Essential':'Book: Mobile Podcasting Essential',
-    'Mobile Podcasting — Professional':'Book: Mobile Podcasting Professional',
-    'Mobile Podcasting — Premium':'Book: Mobile Podcasting Premium',
-    'Live Streaming — Quote Request':'Live Streaming Quote Request',
+    'Live Streaming: Essential':'Book: Live Streaming Essential',
+    'Live Streaming: Professional':'Book: Live Streaming Professional',
+    'Live Streaming: Premium':'Book: Live Streaming Premium',
+    'Mobile Podcasting: Essential':'Book: Mobile Podcasting Essential',
+    'Mobile Podcasting: Professional':'Book: Mobile Podcasting Professional',
+    'Mobile Podcasting: Premium':'Book: Mobile Podcasting Premium',
+    'Live Streaming: Quote Request':'Live Streaming Quote Request',
     'Custom Inquiry':'Custom Package Inquiry'
   };
   document.getElementById('modalTitle').textContent=titles[pkg]||'Book a Package';
@@ -1635,7 +1642,7 @@ function submitBooking(e){
   _netlifyPost(f).then(function(){
     _setStatus(s,"Got it! The goblin will be in touch soon. 🎙️",'ok'); f.reset();
   }).catch(function(){
-    _setStatus(s,'Something glitched — email FlaskampCreative@pm.me directly.','err');
+    _setStatus(s,'Something glitched. Email hello@podgoblin.com directly.','err');
   });
   return false;
 }
@@ -1651,7 +1658,7 @@ function submitContact(e){
   _netlifyPost(f).then(function(){
     _setStatus(s,"Message sent! Talk soon. 🎙️",'ok'); f.reset();
   }).catch(function(){
-    _setStatus(s,'Something glitched — email FlaskampCreative@pm.me directly.','err');
+    _setStatus(s,'Something glitched. Email hello@podgoblin.com directly.','err');
   });
   return false;
 }
