@@ -563,6 +563,39 @@ section { padding: 6rem 0; position: relative; }
 }
 .service-broadcast::before { content:'📡'; }
 
+.service-intro {
+  position:relative;
+  min-height:330px;
+  display:flex; flex-direction:column; justify-content:flex-end; align-items:flex-start;
+  padding-right:36%;
+}
+.goblin-peek.reveal {
+  position:absolute; z-index:1;
+  bottom:-1.5rem;
+  right:calc((100% - 100vw) / 2 - 60px);
+  width:min(480px, 40vw); height:auto;
+  pointer-events:none;
+  opacity:0;
+  -webkit-mask-image:linear-gradient(194deg, #000 56%, transparent 76%);
+  mask-image:linear-gradient(194deg, #000 56%, transparent 76%);
+  transform-origin:bottom right;
+  transform:translateX(75%) rotate(-4deg);
+  transition:transform 0.9s cubic-bezier(0.22,1,0.36,1) 0.15s, opacity 0.4s ease;
+}
+.goblin-peek.reveal.visible { opacity:1; transform:translateX(0) rotate(-14deg); }
+@media(prefers-reduced-motion:reduce){ .goblin-peek.reveal{ transition:none; } }
+@media(max-width:900px){
+  .service-intro { min-height:0; padding-right:0; }
+  .service-intro .service-broadcast { margin-bottom:0.5rem; }
+  .goblin-peek.reveal {
+    position:relative; bottom:auto; right:auto;
+    align-self:flex-end;
+    width:270px;
+    margin:0.25rem -3.25rem -3.25rem 0;
+  }
+}
+.pkg-grid { position:relative; z-index:2; }
+.packages-section { overflow:hidden; }
 .pkg-grid {
   display:grid;
   grid-template-columns:repeat(3,1fr);
@@ -1095,6 +1128,39 @@ nav {
 @media(max-width:700px){ .stream-callout-inner{ flex-direction:column; align-items:flex-start; } }
 
 /* ===== Contact section ===== */
+.more-cta {
+  display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem 2rem;
+  margin-top:2.5rem; padding-top:2rem;
+  border-top:1px solid var(--green-dark);
+}
+.more-cta-text { font-family:'Bebas Neue',sans-serif; font-size:clamp(1.75rem,3vw,2.25rem); letter-spacing:0.03em; color:var(--white); line-height:1; }
+.more-section { position:relative; isolation:isolate; background:var(--black); scroll-margin-top:4rem; }
+.more-section::before {
+  content:'';
+  position:absolute; inset:0; z-index:-1;
+  background:url(images/studio/open-studio.jpg) center 40% / cover no-repeat;
+  opacity:0.3;
+}
+.more-head { text-align:center; margin-bottom:3rem; }
+.more-sub { color:var(--cream); margin-top:1rem; font-family:'Barlow Condensed',sans-serif; font-size:1.2rem; letter-spacing:0.04em; }
+.more-grid { display:flex; flex-wrap:wrap; justify-content:center; gap:1rem; }
+.more-item {
+  flex:0 1 calc(33.333% - 0.67rem);
+  padding:1.5rem;
+  background:rgba(13,13,11,0.82);
+  border:1px solid var(--green-dark);
+  border-top:3px solid var(--green-mid);
+}
+.more-item { transition:border-color 0.2s, box-shadow 0.2s; }
+.more-item:hover {
+  border-color:var(--green-bright);
+  border-top-color:var(--green-acid);
+  box-shadow:0 0 12px rgba(127,255,0,0.35), 0 0 36px rgba(127,255,0,0.22);
+}
+.more-item h3 { font-family:'Bebas Neue',sans-serif; font-weight:400; font-size:1.6rem; letter-spacing:0.04em; color:var(--white); line-height:1.1; margin-bottom:0.4rem; }
+.more-item p { color:var(--parchment); font-size:1rem; line-height:1.5; }
+.more-ask { text-align:center; margin-top:2.5rem; }
+@media(max-width:700px){ .more-item{ flex-basis:100%; } .more-cta{ flex-direction:column; align-items:flex-start; } .more-cta .btn-secondary{ width:100%; text-align:center; } }
 .contact-section { padding:7rem 0; background:var(--dark); }
 .contact-form { max-width:640px; margin:0 auto; background:var(--mud); border:1px solid rgba(127,255,0,0.12); padding:2.5rem; }
 
@@ -1265,12 +1331,16 @@ nav {
 
     <!-- SERVICE 01: PODCAST -->
     <div class="service-block reveal">
+      <div class="service-intro">
       <div class="service-header">
         <span class="service-number">SERVICE 01</span>
         <h3 class="service-name">Mobile Podcasting</h3>
       </div>
       <div class="service-meta">Hourly & daily rates available · Hourly rates on request</div>
       <div class="service-broadcast">Multi-casting lets you broadcast simultaneously to up to 4 platforms: LinkedIn, YouTube, X, Instagram, Amazon & more</div>
+
+      <img class="goblin-peek reveal" src="images/goblin-peek.png" alt="" aria-hidden="true" width="510" height="472" loading="lazy">
+      </div>
 
       <div class="pkg-grid">
         <div class="pkg-card reveal">
@@ -1371,6 +1441,33 @@ nav {
           <span class="addon-chip">Custom inquiry</span>
         </div>
       </div>
+
+      <!-- Need more services -->
+      <div class="more-cta reveal">
+        <div class="more-cta-text">Need more services?</div>
+        <a href="#more-services" class="btn-secondary">See Additional Services</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ADDITIONAL SERVICES -->
+<section class="more-section" id="more-services">
+  <div class="container">
+    <div class="more-head reveal">
+      <div class="section-eyebrow">Beyond the Mic</div>
+      <h2 class="section-title">Additional Services</h2>
+      <p class="more-sub">Booking the podcast room and need a little more? We can help with that too.</p>
+    </div>
+    <div class="more-grid reveal">
+      <div class="more-item"><h3>Cyc Wall</h3><p>A clean white wall for shoots that need a seamless backdrop.</p></div>
+      <div class="more-item"><h3>Commercial Space</h3><p>A room to shoot a quick commercial or promo.</p></div>
+      <div class="more-item"><h3>Videography</h3><p>Camera crew for shoots beyond your show.</p></div>
+      <div class="more-item"><h3>Editing</h3><p>Editors to turn your footage into a finished piece.</p></div>
+      <div class="more-item"><h3>Lighting</h3><p>Lighting setup and support for your shoot.</p></div>
+    </div>
+    <div class="more-ask reveal">
+      <a href="#" class="btn-primary" onclick="openBooking('Additional Services');return false;">Ask About Additional Services</a>
     </div>
   </div>
 </section>
@@ -1534,6 +1631,7 @@ nav {
           <option>Live Streaming: Premium</option>
           <option>Live Streaming: Quote Request</option>
         </optgroup>
+        <option>Additional Services</option>
         <option>Custom Inquiry</option>
       </select>
     </div>
@@ -1699,6 +1797,7 @@ function openBooking(pkg){
     'Mobile Podcasting: Professional':'Book: Mobile Podcasting Professional',
     'Mobile Podcasting: Premium':'Book: Mobile Podcasting Premium',
     'Live Streaming: Quote Request':'Live Streaming Quote Request',
+    'Additional Services':'Additional Services Inquiry',
     'Custom Inquiry':'Custom Package Inquiry'
   };
   document.getElementById('modalTitle').textContent=titles[pkg]||'Book a Package';
